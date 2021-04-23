@@ -12,9 +12,9 @@ This is a generell structure, along with a setup guide for the Distributed Syste
 4. download VSCODE https://code.visualstudio.com/download 
 5. you can use other Code editors (or IDE) but VSCODE is just the best so.....
 6. download python 3.9 https://www.python.org/downloads/  
-    ![python install 1](./pictures/download_Python.png)  
+    ![python install 1](/pictures/download_Python.png)  
 7. check all checkboxes and do Install now  
-    ![python install 2](./pictures/download_Python3.png)   
+    ![python install 2](/pictures/download_Python3.png)   
 8. if you dont know git I recommend using a git GUI that visualises everything
 I like to use https://www.gitkraken.com/ (free version only works for public github repositorys); 
 u can also use https://www.sourcetreeapp.com/
@@ -28,7 +28,7 @@ or a git extension inside VSCode)
     # ctrl + z is the same as quit()
     ```
     
-    ![python in cmd](./pictures/python_in_commandLine.png)  
+    ![python in cmd](/pictures/python_in_commandLine.png)  
 
 11.   py -h # a -h or -?   in the commandline next to a command is sometimes helpfull, to see what you can do
 12.   Now python should work on your system and we can proceed
@@ -43,7 +43,7 @@ or a git extension inside VSCode)
     pip install numpy # to install a python package (here numpy)
     ```  
 
-    ![pip](./pictures/pip.png)  
+    ![pip](/pictures/pip.png)  
 
 17.    now you could use your python installation (python enviroment), that is installed in c:\users\du-wa\appdata\local\programs\python\python39\  
 But thats kind bad, because then you use the same python enviroment for all of your personal projekts. Which means changing something for one of your python projekts could screw up your other projekt.
@@ -58,11 +58,11 @@ It will happen, that you want to install a new package and then it works for one
     mail    your mail may be public on github, im not sure
 22.  This step only one of your team has to do this: Fork this repository to your own github account 
     
-    ![fork](./pictures/fork.png)  
+    ![fork](/pictures/fork.png)  
     while you are there, smash the star button  
 23.  rename your repository
 24.  
-    ![rename](./pictures/rename.png)  
+    ![rename](/pictures/rename.png)  
 25.  click on manage access and invite your teammates, so that you can collaborate on the same github repository
 26.  now clone your repository with gitkraken
     https://github.com/Your-account/the-name-you-chose    
@@ -70,16 +70,16 @@ It will happen, that you want to install a new package and then it works for one
     do not put it in a google drive or Dropbox, or anything that may be synchronized with this kind of service. it may break your git repo  
     dont use spaces or uppercase (just to make sure no stupid programming language complains or has issues with its path)  
 
-![git clone](./pictures/gitClone.png)    
+![git clone](/pictures/gitClone.png)    
 27. open vs Code -> File -> open Folder C:/Git_Repos/the-name-you-chose
 28. install the python extension python
     
-![VSCode python extension](./pictures/pythonExtension.png)  
+![VSCode python extension](/pictures/pythonExtension.png)  
 
 
 29. now we set up the virtual enviroment  
     open the folder _dev_Scripts -> drag and drop the setupPythonEnv.ps1 into the terminal (ctrl+ö   , if its not there yet) -> enter  
-    ![venv command](./pictures/venvCommand.png)  
+    ![venv command](/pictures/venvCommand.png)  
     if windows doesnt let you execute this script (good, you should have at least opend the script to see, what you are executing on your system)  
     you need to open a powershell as administrator
     then copy paste
