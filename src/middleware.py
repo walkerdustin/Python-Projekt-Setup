@@ -11,9 +11,13 @@ import threading
 import socket
 import ipaddress
 
-
+SUBNETMASK = "255.255.255.0"
+BROADCAST_PORT = 61425
 
 class Middleware():
+    net = ipaddress.IPv4Network(IP_ADRESS_OF_THIS_PC + '/' + SUBNETMASK, False)
+    BROADCAST_IP = net.broadcast_address.exploded
+
     holdBackQueue = []
     deliveryQueue = []
         
@@ -28,16 +32,14 @@ class Middleware():
         broadcast_socket.close()
 
     def broadcastToAll(self, message):
-        SUBNETMASK = "255.255.255.0"
-        BROADCAST_PORT = 61425
+        
         SUBNETMASK = ipaddress.netmask.netmask
         IP_ADRESS_OF_THIS_PC = socket.gethostbyname(socket.gethostname())
-        net = ipaddress.IPv4Network(IP_ADRESS_OF_THIS_PC + '/' + SUBNETMASK, False)
-        BROADCAST_IP = net.broadcast_address.exploded
+        
 
         # Send broadcast message
         message = IP_ADRESS_OF_THIS_PC + ' sent a broadcast'
-        broadcast(BROADCAST_IP, BROADCAST_PORT, message)
+        self.broadcast(Middleware.BROADCAST_IP, BROADCAST_PORT, message)
         
     
 

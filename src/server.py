@@ -5,30 +5,11 @@ the points, the game state and all the nessecarry functions to compute anything 
 import sys
 import os
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))    # this adds the src folder to the path # now you can import stuff
-# add to path # get parent directory        #get absolut path of # this python file
-
-# the path looks like this now: python looks here vor .py files
-# for p in sys.path:
-#     print(p)
-# c:\Git_Repos\distributed-systems-game\src\model
-# C:\Users\du-wa\AppData\Local\Programs\Python\Python39\python39.zip
-# C:\Users\du-wa\AppData\Local\Programs\Python\Python39\DLLs
-# C:\Users\du-wa\AppData\Local\Programs\Python\Python39\lib
-# C:\Users\du-wa\AppData\Local\Programs\Python\Python39
-# c:\Git_Repos\distributed-systems-game\venv
-# c:\Git_Repos\distributed-systems-game\venv\lib\site-packages
-# c:\Git_Repos\distributed-systems-game\venv\lib\site-packages\win32
-# c:\Git_Repos\distributed-systems-game\venv\lib\site-packages\win32\lib
-# c:\Git_Repos\distributed-systems-game\venv\lib\site-packages\Pythonwin
-# c:\Git_Repos\distributed-systems-game\src                                         <----------
-
 import uuid
 import socket
 import ipaddress
-from broadcastSender import broadcast
 from time import sleep
-from controller.middleware import Middleware
+from middleware import Middleware
 
 class SimonBroadcastsGame():
     #constants/defines
@@ -45,28 +26,40 @@ class SimonBroadcastsGame():
 
 
 states = {}                 # python dictionary {"key": value} 
-class Statemashine(object): # there should be only one Instance of this class 
-    # states = {}                 # this is a class variable, it is consistent in every Instance (Object olf the same class) 
-                                # python dictionary {"key": value} 
+class Statemachine(object): # there should be only one Instance of this class 
+    __currentState = ''
+
     # State Storage, Parameters and Variables 
+    # these can be changed by from outside the state machine (in a separate file) (maybe even in a separate thread) 
+    # by importing Statemachine (from State_Machine_example import Statemachine) and then
+    # Statemachine.variable = 'something else' 
+    # this variable can then be used in an if statement for transitions
+    variable = 'something'
     PARAMETER = 42 
     counterN = 0 
+    
     ###############################################   internal class 
     class State: # there are multiple instances of this class 
-        total_Number_of_states = 0  # this is a class variable, it is consistent in every Instance (Object olf the same class) 
  
-        def __init__(self, name): 
+        def __init__(self, name:str): 
             self.name = name 
-            self.ID = self.total_Number_of_states 
-            self.total_Number_of_states += 1 
-            states[name] = self          #add this state (self) to the collection (dictionary) of states with the key being name  
+            states[name] = self          #add this state (self) to the collection (dictionary) of states with the key being its name  
  
         def run(self): 
             pass 
     ############################################## 
+
+    @classmethod
+    def switchStateTo(cls, toStateName):
+        print(f'___________Switch State from {cls.__currentState} to {toStateName}')
+        if "exit" in dir(states[cls.__currentState]): # check if the state has a exit() function
+            states[cls.__currentState].exit() # execute the exit function
+        if "entry" in dir(states[toStateName]): # check if the state has a entry() function
+            states[toStateName].entry()
+        cls.__currentState = toStateName
  
     def __init__(self): 
-        self.currentState = "Initializing" 
+        Statemachine.__currentState = "Initializing" 
         ########################################################################### defining all states 
         ############################################## State 0 
         tempState = self.State("Initializing") 
@@ -76,9 +69,8 @@ class Statemashine(object): # there should be only one Instance of this class
             sleep(1) 
             print(".....") 
             sleep(1) 
-            print(".....") 
             # State Transition 
-            self.currentState = "Step 1"    # the self refers to the Statemashine (SM objekt) 
+            Statemachine.switchStateTo("Step 1")    # the self refers to the Statemachine (statemachine object) 
         tempState.run = run0 # overriding the run() method of state0 
         ############################################## State 1 
         tempState = self.State("Step 1") 
@@ -87,17 +79,19 @@ class Statemashine(object): # there should be only one Instance of this class
             print("doing step one") 
             # State Transition 
             if(True): 
-                self.currentState = "Step 2" 
+                Statemachine.switchStateTo("Step 2")
         tempState.run = run1 
         ############################################## State 2 
         tempState = self.State("Step 2") 
         def run2(): 
+            # State Actions 
             print("doing step two .....n = ", self.counterN) 
             self.counterN += 1 
+            # State Transition 
             if(self.counterN < 10):  
-                self.currentState = "Step 1" 
+                Statemachine.switchStateTo("Step 2")
             else: 
-                self.currentState = "Finish" 
+                Statemachine.switchStateTo("Finish") 
         tempState.run = run2 
         ############################################## State 3 
         tempState = self.State("Finish") 
@@ -108,9 +102,11 @@ class Statemashine(object): # there should be only one Instance of this class
         ############################################## 
  
     def runLoop(self): 
-        states[self.currentState].run() # run the current state 
+        states[Statemachine.__currentState].run() # run the current state 
  
 if __name__ == '__main__': 
-    SM = Statemashine() 
+    statemachine = Statemachine() 
     while True: 
-        SM.runLoop()
+        statemachine.runLoop()
+       
+        sleep(1 / 1_000_000) # sleep for a microsecond to prevent unnecessary cpu utilization
