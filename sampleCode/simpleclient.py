@@ -12,6 +12,10 @@ client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # AF_INET means
 server_address = '127.0.0.1'
 server_port = 10001
 
+# client_socket.bind(('', 0)) 
+# # ('', 0) '' means use the lokal IP adress    ,    0 means select a random open port
+# portOfThisSocket = client_socket.getsockname()[1] # returns the previously selected (random) port
+# print(f'{portOfThisSocket = }')
 
 
 # Message sent to server
@@ -26,6 +30,7 @@ try:
     print('Waiting for response...')
     data, server = client_socket.recvfrom(BUFFER_SIZE)
     print('Received message from server at:', server)
+    print(f'response = ' + data.decode('UTF8'))
 
 finally:
     client_socket.close()

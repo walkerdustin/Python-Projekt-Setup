@@ -11,8 +11,9 @@ if __name__ == '__main__':
 
     # Create a UDP socket
     listen_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    # Set the socket to broadcast and enable reusing addresses
+    # Set the socket to broadcast
     listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    # the following line is needed to make sure, that multiple sockets can listen on the same port 
     listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     # Bind socket to address and port
     listen_socket.bind((MY_IP, BROADCAST_PORT))
